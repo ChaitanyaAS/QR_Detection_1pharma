@@ -56,8 +56,8 @@ This section provides the exact steps required for an evaluator to set up the en
 **1.1. Clone the Repository**
 Open your terminal and clone this GitHub repository to your local machine.
 ```bash
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-cd your-repo-name
+git clone https://github.com/ChaitanyaAS/QR_Detection_1pharma.git    
+cd QR_Detection_1Pharma
 ````
 
 **1.2. Create a Virtual Environment (Recommended)**
