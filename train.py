@@ -5,24 +5,21 @@ import yaml
 from ultralytics import YOLO
 import argparse
 
-def train_model(annotation_zip, project_path, run_name, epochs=300, patience=50, imgsz=640):
+def train_model(annotation_zip, source_images_path, project_path, run_name, epochs, batch_size, patience, imgsz):
     """
-    Prepares a dataset from a zip file and trains a YOLOv8 model.
+    Prepares the dataset from a zip file and trains a YOLOv8 model.
     """
-    # Define paths for temporary data within the runtime
+    # Define paths for temporary data
     unzip_dir = 'yolo_export'
     yolo_dataset_path = "QR_YOLO_Dataset"
-    
-    # This path assumes the original dataset has been unzipped separately.
-    # It's needed to find the source images that match the labels.
-    source_images_path = "MultiQR_dataset/QR_Dataset/train_images"
 
     print("--- Data Preparation ---")
     if not os.path.exists(annotation_zip):
         print(f"ERROR: Annotation zip file not found at {annotation_zip}.")
         return
 
-    # Unzip the provided annotation file
+    # Unzip and Organize Data
+    print("Unzipping and organizing data...")
     if os.path.exists(unzip_dir): shutil.rmtree(unzip_dir)
     os.makedirs(unzip_dir, exist_ok=True)
     os.system(f'unzip -q "{annotation_zip}" -d "{unzip_dir}"')
@@ -38,14 +35,14 @@ def train_model(annotation_zip, project_path, run_name, epochs=300, patience=50,
         print("ERROR: No .txt label files found inside the zip file.")
         return
 
-    # Recreate the final dataset folder to ensure it's clean
+    # Recreate the final dataset folder
     if os.path.exists(yolo_dataset_path): shutil.rmtree(yolo_dataset_path)
     final_images_path = os.path.join(yolo_dataset_path, "images/train")
     final_labels_path = os.path.join(yolo_dataset_path, "labels/train")
     os.makedirs(final_images_path, exist_ok=True)
     os.makedirs(final_labels_path, exist_ok=True)
 
-    # Match labels with original images and copy both to the final dataset folder
+    # Match labels with original images and copy them
     copied_images = 0
     for label_file in os.listdir(label_source_path):
         if label_file.endswith('.txt'):
@@ -80,7 +77,8 @@ def train_model(annotation_zip, project_path, run_name, epochs=300, patience=50,
         epochs=epochs,
         patience=patience,
         imgsz=imgsz,
-        augment=False, # Key setting from our successful run
+        batch=batch_size,
+        augment=False,
         project=project_path,
         name=run_name
     )
@@ -89,8 +87,14 @@ def train_model(annotation_zip, project_path, run_name, epochs=300, patience=50,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="QR Code Detection Training Script")
     parser.add_argument('--annotations', type=str, required=True, help="Path to the annotation zip file (containing .txt labels).")
-    parser.add_argument('--project_path', type=str, required=True, help="Path to save the training run folder.")
+    parser.add_argument('--images', type=str, required=True, help="Path to the original training images folder.")
+    parser.add_argument('--project_path', type=str, required=True, help="Path to save the training run folder (e.g., your Drive folder).")
     parser.add_argument('--run_name', type=str, default="QR_Detection_Run", help="Name for the training run folder.")
+    parser.add_argument('--epochs', type=int, default=300, help="Number of training epochs.")
+    parser.add_argument('--batch_size', type=int, default=16, help="Batch size for training.")
+    parser.add_argument('--patience', type=int, default=50, help="Patience for early stopping.")
+    parser.add_argument('--imgsz', type=int, default=640, help="Image size for training.")
     
     args = parser.parse_args()
-    train_model(args.annotations, args.project_path, args.run_name)
+    
+    train_model(args.annotations, args.images, args.project_path, args.run_name, args.epochs, args.batch_size, args.patience, args.imgsz)
