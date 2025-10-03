@@ -1,6 +1,4 @@
 
-```python
-%%writefile README.md
 # Multi-QR Code Detection for Medicine Packs
 
 This project is a submission for the **Multi-QR Code Recognition for Medicine Packs Hackathon**. It uses a fine-tuned YOLOv8 model to accurately detect the locations of multiple QR codes on pharmaceutical packaging. The model is designed to be robust against challenging real-world conditions such as variations in lighting, angle, and partial occlusion.
