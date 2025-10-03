@@ -85,10 +85,10 @@ args = parser.parse_args()
 
 # --- Load YOLO Model ---
 if not os.path.exists(args.model_weights):
-    print(f"❌ ERROR: Model not found at {args.model_weights}.")
+    print(f" ERROR: Model not found at {args.model_weights}.")
     exit()
 model = YOLO(args.model_weights)
-print("✅ YOLO model loaded successfully.")
+print("YOLO model loaded successfully.")
 
 # --- Prepare Input Images ---
 input_paths = []
@@ -159,4 +159,4 @@ for img_path in input_paths:
 # --- Save JSON Results ---
 with open(args.output, "w") as f:
     json.dump(results_list, f, indent=4)
-print(f"\n✅ All results saved to {args.output}")
+print(f"\n All results saved to {args.output}")
