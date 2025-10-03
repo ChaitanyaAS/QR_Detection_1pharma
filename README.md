@@ -1,15 +1,12 @@
-%%writefile README.md
 # Multi-QR Code Detection for Medicine Packs
 
-This project is a submission for the **Multi-QR Code Recognition for Medicine Packs Hackathon**. It uses a fine-tuned YOLOv8 model to accurately detect the location of multiple QR codes on pharmaceutical packaging.
-
----
+This project is a submission for the Multi-QR Code Recognition for Medicine Packs Hackathon. It uses a fine-tuned YOLOv8 model to accurately detect the locations of multiple QR codes on pharmaceutical packaging.
 
 ## Repository Structure
 
 The project is organized as follows:
 
-your-repo-name/
+multiqr-hackathon/
 │
 ├── README.md
 ├── requirements.txt
@@ -19,8 +16,6 @@ your-repo-name/
 └── weights/
 └── best.pt
 
-
----
 
 ## Setup and Installation
 
@@ -35,17 +30,15 @@ your-repo-name/
     pip install -r requirements.txt
     ```
 
----
-
 ## Usage
 
 ### Training
 
-The `train.py` script fine-tunes a YOLOv8 model on a custom dataset.
+The `train.py` script fine-tunes a YOLOv8 model.
 
 **Prerequisites:**
-1.  Unzip the main dataset (`Multi-QR-Code-Detection.zip`) so the `train_images` are available in your environment.
-2.  Provide an annotation `.zip` file (in YOLO format, containing only the `.txt` labels).
+* Unzip the main dataset (`Multi-QR-Code-Detection.zip`) so the `train_images` are available.
+* Provide an annotation `.zip` file (in YOLO format, containing only the `.txt` labels).
 
 **To run training:**
 ```bash
@@ -53,7 +46,7 @@ python train.py --annotations <path_to_labels.zip> --project_path <path_to_save_
 Inference
 The infer.py script generates the final submission.json file.
 
-To run inference, use the following command:
+To run inference:
 
 Bash
 
