@@ -99,6 +99,7 @@ This will process all images in the input directory and create the submission.js
 The model was trained for 300 epochs on a custom-annotated dataset of XX images (replace XX with the number of labeled images).  
 Final validation performance:  
 
-- Precision: 0.XXX  
-- Recall: 0.XXX  
-- mAP50 (B): 0.XXX  
+- Precision: 0.99929  
+- Recall: 1.0
+- mAP50 (B): 0.995
+- mAP50 (B): 0.86496
