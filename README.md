@@ -7,7 +7,7 @@ Additionally, this repository includes a **bonus challenge solution**: decoding 
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 - [Project Overview](#project-overview)
 - [Repository Structure](#repository-structure)
 - [Step-by-Step Guide for Evaluation](#step-by-step-guide-for-evaluation)
@@ -36,7 +36,7 @@ The **bonus challenge** extends this by:
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```
 
@@ -54,7 +54,7 @@ The **bonus challenge** extends this by:
 
 ---
 
-## 📝 Step-by-Step Guide for Evaluation
+##  Step-by-Step Guide for Evaluation
 
 ### 1. Setup and Installation
 
@@ -123,7 +123,7 @@ python bonus_infer.py --input "demo_images/" --output "submission_decoding.json"
 
 ---
 
-## 💡 Additional Scripts
+##  Additional Scripts
 
 ### Visual Demonstration
 
@@ -143,7 +143,7 @@ python train.py --annotations <path_to_labels.zip> --images <path_to_train_image
 
 ---
 
-## 📊 Model Performance
+##  Model Performance
 
 Trained for **300 epochs** on a custom-annotated dataset:
 
