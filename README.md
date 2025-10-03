@@ -28,7 +28,6 @@ The primary objective of this project is to solve the detection challenge by ide
 The **bonus challenge** extends this by:
 
 1. **Decoding the QR Content** – converting the QR code black/white modules into actual text or numbers (e.g., "B12345").  
-2. **Classifying the Content** – identifying the type of information stored (e.g., batch number, manufacturer code, serial number).
 
 - **Detection Model:** YOLOv8n (nano version)  
 - **Framework:** PyTorch (via `ultralytics`)  
