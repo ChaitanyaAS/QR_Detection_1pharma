@@ -152,4 +152,4 @@ Trained for **300 epochs** on a custom-annotated dataset:
 The bonus decoder has been tested to correctly extract and classify QR content in all validation images.
 
 ```
-
+Colab link : https://colab.research.google.com/drive/1DITnr2vu-JeX10M42pI84wxG2jgoLZ6A?usp=sharing
