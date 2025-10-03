@@ -17,96 +17,88 @@ This project is a submission for the **Multi-QR Code Recognition for Medicine Pa
 
 The primary objective of this project is to solve the detection challenge by identifying all QR codes in a given image and outputting their bounding box coordinates. The solution is built using the `ultralytics` library, leveraging a pre-trained YOLOv8 model which is subsequently fine-tuned on a custom-annotated dataset derived from the competition's training images.
 
-- **Model:** YOLOv8n (nano)
-- **Framework:** PyTorch (via `ultralytics`)
-- **Training Data:** A custom-annotated subset of the provided training images.
+- **Model:** YOLOv8n (nano)  
+- **Framework:** PyTorch (via `ultralytics`)  
+- **Training Data:** A custom-annotated subset of the provided training images.  
 
 ---
 
 ## Repository Structure
 
-The project is organized following the recommended hackathon structure:
-
-multiqr-hackathon/
-│
-├── README.md                # This file: Setup and usage instructions
-├── requirements.txt         # Python dependencies for the project
-├── train.py                 # Script for training the model
-├── infer.py                 # Script for running inference and generating the submission file
-│
-└── weights/
-└── best.pt              # The final trained model weights for inference
-
+multiqr-hackathon/  
+│  
+├── README.md                # Setup and usage instructions  
+├── requirements.txt         # Python dependencies for the project  
+├── train.py                 # Script for training the model  
+├── infer.py                 # Script for running inference and generating the submission file  
+│  
+└── weights/  
+  └── best.pt              # Final trained model weights for inference  
 
 ---
 
 ## Setup and Installation
 
-To set up the project environment, please follow these steps. This project was developed and tested using Python 3.10.
+This project was developed and tested with **Python 3.10**.  
 
-**1. Clone the Repository:**
-```bash
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-cd your-repo-name
-2. Create a Virtual Environment (Recommended):
-It is recommended to use a virtual environment to manage project dependencies.
+1. **Clone the Repository:**  
+git clone https://github.com/your-username/your-repo-name.git  
+cd your-repo-name  
 
-Bash
+2. **Create a Virtual Environment (Recommended):**  
+python -m venv venv  
+source venv/bin/activate   # On Windows: venv\Scripts\activate  
 
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-3. Install Dependencies:
-All required libraries are listed in the requirements.txt file. Install them using pip:
+3. **Install Dependencies:**  
+pip install -r requirements.txt  
 
-Bash
+---
 
-pip install -r requirements.txt
-Usage
-The project includes two primary scripts: train.py for training a new model and infer.py for generating predictions.
+## Usage
 
-Training
-The train.py script fine-tunes a YOLOv8 model on a custom dataset.
+The project includes two primary scripts:  
+- train.py → for training a new model  
+- infer.py → for generating predictions  
 
-Prerequisites:
+### Training
 
-An annotation .zip file in YOLO format, which must contain both the .jpg image files and their corresponding .txt label files.
+The train.py script fine-tunes a YOLOv8 model on a custom dataset.  
 
-The original dataset's train_images folder must be available and correctly path-referenced if the annotation zip does not contain images.
+**Prerequisites:**  
+- An annotation .zip file in YOLO format, containing both .jpg image files and their corresponding .txt label files.  
+- If the .zip does not contain images, the original dataset’s train_images/ folder must be available and referenced correctly.  
 
-To run the training script:
+**Steps:**  
+1. Place your prepared annotation .zip file in the root of the project directory.  
+2. Modify the zip_filename variable inside the train.py script to match the name of your file.  
+3. Run training:  
+python train.py  
 
-Place your prepared annotation .zip file in the root of the project directory.
+The final trained model (best.pt) and training artifacts will be saved to a new directory.  
 
-Modify the zip_filename variable inside the train.py script to match the name of your file.
+---
 
-Execute the script from the command line:
+### Inference
 
-Bash
+The infer.py script generates the final submission.json file required for the hackathon. It requires:  
+- A folder of test images  
+- Path to the trained model weights  
 
-python train.py
-The final trained model (best.pt) and other training artifacts will be saved to a new directory.
+**Run Inference:**  
+python infer.py --input <path_to_test_images> --output submission.json --model_weights weights/best.pt  
 
-Inference
-The infer.py script is used to generate the final submission_detection_1.json file for the hackathon. It requires a folder of test images and the path to the trained model weights.
+**Example:**  
+python infer.py --input data/test_images/ --output submission.json --model_weights weights/best.pt  
 
-To generate the submission file, run the following command:
-Make sure to replace <path_to_test_images> with the actual path to the folder containing the test images.
+This will process all images in the input directory and create the submission.json file in the project root.  
 
-Bash
+---
 
-python infer.py --input <path_to_test_images> --output submission.json --model_weights weights/best.pt
-Example:
+## Model Performance
 
-Bash
+The model was trained for 300 epochs on a custom-annotated dataset of XX images (replace XX with the number of labeled images).  
+Final validation performance:  
 
-python infer.py --input data/test_images/ --output submission.json --model_weights weights/best.pt
-This command will process all images in the specified input directory and create the submission.json file in the project's root.
-
-Model Performance
-The model was trained for 300 epochs on a custom-annotated dataset of XX images (please replace XX with the number of images you labeled). The final model achieved the following performance on its validation set:
-
-Precision: 0.XXX
-
-Recall: 0.XXX
-
-mAP50 (B): 0.XXX
+- Precision: 0.XXX  
+- Recall: 0.XXX  
+- mAP50 (B): 0.XXX  
