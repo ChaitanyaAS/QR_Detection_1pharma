@@ -117,8 +117,7 @@ python bonus_infer.py --input "demo_images/" --output "submission_decoding.json"
 2. Crops and processes each QR code.
 3. Converts the QR modules into binary grids.
 4. Decodes the QR content (alphanumeric text).
-5. Classifies each decoded text (e.g., batch number, manufacturer code, serial number).
-6. Saves the results in a JSON file with all decoded texts and classifications.
+5. Saves the results in a JSON file with all decoded texts and classifications.
 
 ---
 
