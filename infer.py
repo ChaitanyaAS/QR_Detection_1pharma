@@ -11,19 +11,19 @@ def run_inference(input_dir, output_path, model_weights):
     
     try:
         model = YOLO(model_weights)
-        print("Model loaded successfully.")
+        print("✅ Model loaded successfully.")
     except Exception as e:
-        print(f"ERROR: Failed to load model. {e}")
+        print(f"❌ ERROR: Failed to load model. {e}")
         return
 
     try:
         image_files = [f for f in os.listdir(input_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
         if not image_files:
-            print(f"ERROR: No images found in '{input_dir}'")
+            print(f"❌ ERROR: No images found in '{input_dir}'")
             return
         print(f"Found {len(image_files)} images to process.")
     except FileNotFoundError:
-        print(f"ERROR: Input directory not found at '{input_dir}'")
+        print(f"❌ ERROR: Input directory not found at '{input_dir}'")
         return
 
     submission_data = []
@@ -33,7 +33,7 @@ def run_inference(input_dir, output_path, model_weights):
         try:
             results = model.predict(source=image_path, device=device, verbose=False, conf=0.25)
         except Exception as e:
-            print(f"ERROR: Failed to process image {image_name}. {e}")
+            print(f"❌ ERROR: Failed to process image {image_name}. {e}")
             continue
 
         image_entry = {"image_id": image_name, "qrs": []}
@@ -47,9 +47,9 @@ def run_inference(input_dir, output_path, model_weights):
     try:
         with open(output_path, 'w') as f:
             json.dump(submission_data, f, indent=2)
-        print(f"\nSuccess! Submission file saved to: {output_path}")
+        print(f"\n🎉 Success! Submission file saved to: {output_path}")
     except Exception as e:
-        print(f"ERROR: Failed to save submission file. {e}")
+        print(f"❌ ERROR: Failed to save submission file. {e}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="QR Code Detection Inference Script")
