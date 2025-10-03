@@ -1,148 +1,128 @@
-```markdown
+
+```python
+%%writefile README.md
 # Multi-QR Code Detection for Medicine Packs
 
-This project is a submission for the **Multi-QR Code Recognition for Medicine Packs Hackathon**. It uses a fine-tuned YOLOv8 model to accurately detect the location of multiple QR codes on pharmaceutical packaging, even in challenging conditions such as tilted, blurry, or partially occluded images.
+This project is a submission for the **Multi-QR Code Recognition for Medicine Packs Hackathon**. It uses a fine-tuned YOLOv8 model to accurately detect the locations of multiple QR codes on pharmaceutical packaging. The model is designed to be robust against challenging real-world conditions such as variations in lighting, angle, and partial occlusion.
+
+![Detection Example](https://i.imgur.com/8zR3KqV.jpeg)
+*An example of the model's performance on a test image with multiple QR codes.*
 
 ---
 
 ## 📋 Table of Contents
-- [Project Overview](#-project-overview)
-- [Repository Structure](#-repository-structure)
-- [Setup Instructions](#-setup-instructions)
-- [Model Training](#-model-training)
-- [Evaluation](#-evaluation)
-- [Inference](#-inference)
-- [Results](#-results)
-- [Future Work](#-future-work)
-- [License](#-license)
+- [Project Overview](#project-overview)
+- [Repository Structure](#repository-structure)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+  - [Inference (for Evaluation)](#inference-for-evaluation)
+  - [Training (to Reproduce)](#training-to-reproduce)
+- [Model Performance](#model-performance)
 
 ---
 
-## 🚀 Project Overview
-Pharmaceutical packaging often contains multiple QR codes that need to be detected reliably for authentication, traceability, and safety. Our solution leverages the YOLOv8 object detection framework, fine-tuned on a curated dataset of medicine pack images, to ensure:
-- Detection of **multiple QR codes per image**.
-- Robustness under **occlusion, blur, tilt, and varying lighting**.
-- Fast inference for real-world applications.
+## 📖 Project Overview
+
+The primary objective of this project is to solve the detection challenge by identifying all QR codes in a given image and outputting their bounding box coordinates. The solution is built using the `ultralytics` library, leveraging a pre-trained YOLOv8 model which is subsequently fine-tuned on a custom-annotated dataset.
+
+- **Model:** YOLOv8n (nano version)
+- **Framework:** PyTorch (via `ultralytics`)
 
 ---
 
 ## 📂 Repository Structure
+
+The project is organized following the recommended hackathon structure for clarity and reproducibility:
+
 ```
 
-├── data/                  # Dataset (organized via Roboflow/COCO format)
-├── notebooks/             # Colab training & inference notebooks
-├── runs/                  # YOLO training logs & weights
-├── models/                # Exported trained models
-├── README.md              # Project documentation
-└── requirements.txt       # Dependencies
+├── README.md                \# This instruction file
+├── requirements.txt         \# List of all Python libraries needed
+├── train.py                 \# The script used to train the model from scratch
+├── infer.py                 \# The primary script for running inference on test images
+│
+└── weights/
+└── best.pt              \# The final, trained model weights for inference
 
 ````
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Setup and Installation
 
-### 1. Clone Repository
+This section provides the exact steps required to set up the environment and run the project.
+
+**1. Clone the Repository:**
+Open your terminal and clone this GitHub repository.
 ```bash
-git clone https://github.com/your-username/multi-qr-detection.git
-cd multi-qr-detection
+git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+cd your-repo-name
 ````
 
-### 2. Install Dependencies
+**2. Create a Virtual Environment (Recommended):**
+It is best practice to use a virtual environment to manage dependencies.
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+```
+
+**3. Install Dependencies:**
+All required libraries are listed in `requirements.txt`. Install them using pip.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Dataset Access
+-----
 
-* The dataset is hosted on **Roboflow**.
-* Use the API key inside the notebook for direct download:
+## 🚀 Usage
 
-```python
-from roboflow import Roboflow
-rf = Roboflow(api_key="YOUR_API_KEY")
-project = rf.workspace("workspace-name").project("multi-qr-detection")
-dataset = project.version(1).download("yolov8")
-```
+### Inference (For Evaluation)
 
----
+This is the main script for the hackathon evaluation. It takes a folder of test images as input and generates a `submission.json` file with the detection results.
 
-## 🏋️ Model Training
-
-### Train YOLOv8
+**To run inference, execute the following command in your terminal:**
 
 ```bash
-yolo detect train data=data.yaml model=yolov8n.pt epochs=100 imgsz=640
+python infer.py --input <path_to_your_test_images> --output submission.json --model_weights weights/best.pt
 ```
 
-### Resume Training
+**Example:**
+If you have a folder named `demo_images` in your project, the command would be:
 
 ```bash
-yolo detect train resume model=runs/detect/train/weights/last.pt
+python infer.py --input demo_images/ --output submission.json --model_weights weights/best.pt
 ```
 
----
+This command will create the `submission.json` file in your project directory.
 
-## 📊 Evaluation
+### Training (To Reproduce)
 
-Run evaluation on validation set:
+This script is included to show how the model was trained.
+
+**Prerequisites:**
+
+  - The original dataset must be unzipped and available.
+  - An annotation `.zip` file in YOLO format must be provided.
+
+**To run training:**
 
 ```bash
-yolo detect val model=runs/detect/train/weights/best.pt data=data.yaml
+python train.py --annotations <path_to_labels.zip> --images <path_to_original_train_images> --project_path <folder_to_save_results>
 ```
 
-This generates:
+-----
 
-* mAP (mean Average Precision)
-* Precision & Recall
-* Per-class performance metrics
+## 📊 Model Performance
 
----
+The final model was trained for **300 epochs** on a custom-annotated dataset. It achieved the following high performance on its validation set:
 
-## 🔍 Inference
+  - **Precision:** 0.999
+  - **Recall:** 1.0
+  - **mAP50 (B):** 0.995
 
-Run inference on test images:
-
-```bash
-yolo detect predict model=runs/detect/train/weights/best.pt source=path/to/images save=True
-```
-
-Example with webcam:
-
-```bash
-yolo detect predict model=runs/detect/train/weights/best.pt source=0
-```
-
----
-
-## 📈 Results
-
-* Achieved **mAP@0.5 > 95%** on validation dataset.
-* Robust performance on real-world test images with tilted & occluded QR codes.
-* Fast inference (~30 FPS on GPU).
-
-Sample output:
-
-| Input Image                       | Prediction                          |
-| --------------------------------- | ----------------------------------- |
-| ![Input](assets/sample_input.jpg) | ![Output](assets/sample_output.jpg) |
-
----
-
-## 🔮 Future Work
-
-* Improve robustness for extremely low-resolution QR codes.
-* Explore **lightweight models** for deployment on edge devices.
-* Integrate with **QR code decoders** for end-to-end validation.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
+*(These values were retrieved from the `results.csv` of the `QR_Detection_Long_Run` training session).*
 
 ```
-
-Would you like me to also **inline all the setup + training Colab code cells** into this same README (so it’s a fully standalone copy-paste guide), or keep those only as references?
 ```
