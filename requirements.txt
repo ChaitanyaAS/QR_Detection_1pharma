@@ -3,4 +3,4 @@ ultralytics
 opencv-python-headless
 tqdm
 pyyaml
-# torch and torchvision are typically pre-installed
+# torch and torchvision are typically pre-installed in cloud environments
