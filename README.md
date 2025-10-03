@@ -155,9 +155,3 @@ The bonus decoder has been tested to correctly extract and classify QR content i
 
 ```
 
----
-
-If you want, I can also **add a small JSON example** for the `bonus_infer.py` output so evaluators immediately know the expected format.  
-
-Do you want me to do that?
-```
