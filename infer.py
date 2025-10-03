@@ -1,4 +1,3 @@
-%%writefile infer.py
 import os
 import json
 import argparse
