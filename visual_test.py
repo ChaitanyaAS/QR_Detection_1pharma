@@ -18,7 +18,7 @@ def order_points(pts):
 
 def visualize(image_path_or_url, model_path):
     model = YOLO(model_path)
-    print("✅ Trained model loaded successfully.")
+    print("Trained model loaded successfully.")
 
     original_image = None
     if image_path_or_url.startswith('http'):
@@ -27,16 +27,16 @@ def visualize(image_path_or_url, model_path):
             response.raise_for_status()
             pil_image = Image.open(response.raw).convert('RGB')
             original_image = np.array(pil_image)[:, :, ::-1].copy()
-            print("✅ Successfully downloaded image.")
+            print(" Successfully downloaded image.")
         except Exception as e:
-            print(f"❌ ERROR: Failed to download image: {e}")
+            print(f" ERROR: Failed to download image: {e}")
             return
     else:
         if not os.path.exists(image_path_or_url):
             print(f"❌ ERROR: Image not found at {image_path_or_url}")
             return
         original_image = cv2.imread(image_path_or_url)
-        print("✅ Successfully loaded local image.")
+        print("Successfully loaded local image.")
 
     if original_image is not None:
         results = model.predict(source=original_image, verbose=False, conf=0.25)
